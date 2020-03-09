@@ -1,0 +1,10 @@
+mybatis-plus:
+  mapper-locations: mybatis/**/*Mapper.xml
+
+spring:
+  profiles:
+    active: master-slave
+logging:
+  level:
+    com.test: debug
+    org.apache.ibatis: debug
