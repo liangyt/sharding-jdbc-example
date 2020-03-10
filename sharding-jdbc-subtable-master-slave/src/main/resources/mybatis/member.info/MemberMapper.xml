@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.member.info.mapper.MemberMapper">
+    <select id="selectForUpdate" parameterType="long" resultType="com.test.member.info.entity.Member">
+        select * from member where id = #{id} for update
+    </select>
+</mapper>
