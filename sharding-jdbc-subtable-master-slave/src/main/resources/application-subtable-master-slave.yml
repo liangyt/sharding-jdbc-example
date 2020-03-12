@@ -23,19 +23,19 @@ spring:
     sharding:
       tables:
         coupon:
-          actual-data-nodes: ds0.coupon_${0..1}
+          actual-data-nodes: ds0.coupon_${0..1} # 逻辑表 coupon 对应的真实表
           table-strategy:
             inline:
-              sharding-column: id
-              algorithm-expression: coupon_$->{id%2}
+              sharding-column: id # 分区表字段
+              algorithm-expression: coupon_$->{id%2} # 对照真实表的逻辑表达式
           key-generator:
-            column: id
-            type: SNOWFLAKE
-      binding-tables: coupon
+            column: id # 哪个表中字段使用sharding-jdbc填充
+            type: SNOWFLAKE # 雪花算法
+      binding-tables: coupon # 绑定的逻辑表，可以使用逗号分割多表
       master-slave-rules:
         ds0:
-          master-data-source-name: ds-master
-          slave-data-source-names: ds-slave-0, ds-slave-1
+          master-data-source-name: ds-master # 指定主库
+          slave-data-source-names: ds-slave-0, ds-slave-1 # 指定从库
     props:
       sql:
         show: true # 显示SQL

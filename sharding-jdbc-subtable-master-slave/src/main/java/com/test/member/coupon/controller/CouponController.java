@@ -25,7 +25,7 @@ public class CouponController {
     private CouponServiceImpl couponService;
 
     /**
-     * 插入，根据分区键的策略表达式自动插入对应的真实表
+     * 插入，根据分区键的策略表达式自动插入对应的真实表,
      */
     @GetMapping("/add")
     public void add() {
