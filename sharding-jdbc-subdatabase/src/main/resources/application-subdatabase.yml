@@ -1,0 +1,42 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: ds0,ds1
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/db0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/db1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+    sharding:
+      tables:
+        order_item: # 订单表，只在一个数据源里面存在;注意关键字 order,不能起表名 order
+          actual-data-nodes: ds0.order_item # 逻辑表 order 对应的真实表
+        user: # 用户表，在两个数据源中各存在一个
+          actual-data-nodes: ds0.user_0,ds1.user_1 # 两个表，在两个数据源中各存在一个
+          database-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: ds$->{id%2}
+          table-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: user_$->{id%2}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+      binding-tables: order_item,user # 绑定的逻辑表，可以使用逗号分割多表
+      broadcast-tables: level # 广播表，在两个数据中存在的一样的表，数据也一样
+      default-key-generator: # 默认主键生成策略
+        column: id
+        type: SNOWFLAKE
+    props:
+      sql:
+        show: true # 显示SQL
+

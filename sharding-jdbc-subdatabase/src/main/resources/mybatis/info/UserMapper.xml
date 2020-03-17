@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.info.mapper.UserMapper">
+
+    <resultMap id="userWithLevelMap" type="com.test.info.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="levelId" column="level_id" />
+        <result property="time" column="time" />
+        <association property="level" column="level_id" select="com.test.info.mapper.LevelMapper.getLevelById" />
+    </resultMap>
+
+    <select id="getUserWithLevelById" parameterType="long" resultMap="userWithLevelMap">
+        select id, name, level_id, time from user where id = #{id}
+    </select>
+</mapper>
